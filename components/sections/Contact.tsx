@@ -167,9 +167,12 @@ function ContactForm() {
     setState("loading");
 
     const form = e.currentTarget;
-    const name = (form.elements.namedItem("name") as HTMLInputElement)?.value || "";
-    const email = (form.elements.namedItem("email") as HTMLInputElement)?.value || "";
-    const message = (form.elements.namedItem("message") as HTMLTextAreaElement)?.value || "";
+    const name =
+      (form.elements.namedItem("name") as HTMLInputElement)?.value || "";
+    const email =
+      (form.elements.namedItem("email") as HTMLInputElement)?.value || "";
+    const message =
+      (form.elements.namedItem("message") as HTMLTextAreaElement)?.value || "";
 
     const subject = `Project Inquiry from ${name}`;
     const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
@@ -221,12 +224,12 @@ function ContactForm() {
         </div>
 
         <div className="mt-6 grid gap-4">
-          <Field id="name" label="name" placeholder="Jane Doe" />
+          <Field id="name" label="name" placeholder="James Manon-og" />
           <Field
             id="email"
             type="email"
             label="email"
-            placeholder="jane@studio.com"
+            placeholder="jamesmanonog@gmail.com"
           />
 
           <Field
