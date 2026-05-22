@@ -137,7 +137,7 @@ export default function Projects() {
           <Folder
             color="#4ade80"
             size={3}
-            items={paperItems}
+            items={paperItems as any}
             className="cursor-pointer hover:drop-shadow-2xl transition-all"
           />
         </motion.div>
