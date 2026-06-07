@@ -78,9 +78,9 @@ body {
     line-height: 0.95;
   }
   .glass {
-    background: rgba(6, 10, 7, 0.7);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    background: rgba(6, 10, 7, 0.78);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
   }
   .gradient-text {
     background: linear-gradient(
@@ -253,6 +253,53 @@ body {
     transparent 50%,
     rgba(0, 0, 0, 0.55) 100%
   );
+}
+
+/* Static, GPU-cheap background shown when the WebGL fluid is disabled
+   (mobile / low-end / reduced-motion). Echoes the fluid's palette so the
+   page still looks intentional, with zero per-frame cost. */
+.site-bg-fallback {
+  background:
+    radial-gradient(
+      ellipse at 18% -10%,
+      rgba(82, 39, 255, 0.12),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 85% 8%,
+      rgba(255, 159, 252, 0.07),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 50% 110%,
+      rgba(74, 222, 128, 0.1),
+      transparent 60%
+    ),
+    #030604;
+}
+
+/* Visible keyboard-focus ring for touch/keyboard users (none existed before) */
+:focus-visible {
+  outline: 2px solid rgba(74, 222, 128, 0.55);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Honor the OS "reduce motion" setting as a global safety net. Framer Motion
+   is handled separately via <MotionConfig reducedMotion="user">; this covers
+   CSS animations/transitions and native smooth scrolling. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* HUD callout dotted line */

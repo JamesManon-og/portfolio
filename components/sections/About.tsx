@@ -5,16 +5,20 @@ import { ArrowRight, Download, Crosshair } from "lucide-react";
 import { useRef } from "react";
 import BlurReveal from "@/components/ui/BlurReveal";
 import DecryptedText from "@/components/ui/DecryptedText";
+import { useDeviceCapability } from "@/lib/useDeviceCapability";
 
 const headline = ["Hello", "I'm", "Ox,", "Greetings!"];
 
 export default function About() {
   const ref = useRef<HTMLElement>(null);
+  const { reducedMotion, coarsePointer } = useDeviceCapability();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  // Tone the parallax down on touch and off entirely for reduced-motion.
+  const parallaxRange = reducedMotion ? 0 : coarsePointer ? 40 : 120;
+  const y = useTransform(scrollYProgress, [0, 1], [0, parallaxRange]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
@@ -149,7 +153,7 @@ export default function About() {
           >
             <a
               href="#projects"
-              className="group inline-flex items-center gap-2 rounded border border-phosphor/50 bg-phosphor/10 px-5 py-3 font-mono text-xs uppercase tracking-[0.18em] text-phosphor-200 transition-all hover:gap-3 hover:bg-phosphor/20 hover:shadow-phosphor"
+              className="group inline-flex items-center gap-2 rounded border border-phosphor/50 bg-phosphor/10 px-5 py-3 font-mono text-xs uppercase tracking-[0.18em] text-phosphor-200 transition-all hover:gap-3 hover:bg-phosphor/20 hover:shadow-phosphor active:scale-[0.98]"
             >
               <span className="phosphor-glow">Projects</span>
               <ArrowRight
@@ -161,7 +165,7 @@ export default function About() {
               href="/Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded border border-line bg-bg-card/60 px-5 py-3 font-mono text-xs uppercase tracking-[0.18em] text-ink hover:border-phosphor/30 hover:text-phosphor-200"
+              className="inline-flex items-center gap-2 rounded border border-line bg-bg-card/60 px-5 py-3 font-mono text-xs uppercase tracking-[0.18em] text-ink transition-all hover:border-phosphor/30 hover:text-phosphor-200 active:scale-[0.98]"
             >
               View Resume
             </a>

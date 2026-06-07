@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight, Github, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import BlurReveal from "@/components/ui/BlurReveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import ScrollFloat from "@/components/ui/ScrollFloat";
@@ -71,6 +72,16 @@ const projects: Project[] = [
 
 export default function Projects() {
   const [selected, setSelected] = useState<Project | null>(null);
+  // Smaller folder on phones so it fits the viewport; full size on md+.
+  const [folderSize, setFolderSize] = useState(1.8);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const apply = () => setFolderSize(mq.matches ? 3 : 1.8);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   const currentProjects = projects.slice(0, 3);
 
@@ -83,7 +94,11 @@ export default function Projects() {
       }}
       className="group w-full h-full relative overflow-hidden rounded-lg cursor-pointer bg-black"
     >
-      <ProjectVisual visual={p.visual} image={p.image} />
+      <ProjectVisual
+        visual={p.visual}
+        image={p.image}
+        sizes="(max-width: 768px) 45vw, 260px"
+      />
       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg" />
     </button>
   ));
@@ -127,7 +142,7 @@ export default function Projects() {
       </div>
 
       {/* Central folder with project visuals inside */}
-      <div className="flex flex-col items-center justify-center mt-72">
+      <div className="flex flex-col items-center justify-center mt-44 md:mt-72">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -136,7 +151,7 @@ export default function Projects() {
         >
           <Folder
             color="#4ade80"
-            size={3}
+            size={folderSize}
             items={paperItems as any}
             className="cursor-pointer hover:drop-shadow-2xl transition-all"
           />
@@ -157,7 +172,7 @@ export default function Projects() {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl mx-4 max-h-[80vh] overflow-y-auto rounded-lg border border-line bg-bg-card/95 p-8 shadow-2xl"
+            className="relative w-full max-w-2xl mx-4 max-h-[85vh] overflow-y-auto rounded-lg border border-line bg-bg-card/95 p-5 shadow-2xl sm:p-8"
           >
             {/* Close button */}
             <button
@@ -170,7 +185,11 @@ export default function Projects() {
 
             {/* Project visual */}
             <div className="relative mb-6 aspect-[16/10] overflow-hidden rounded border border-phosphor/30 bg-black">
-              <ProjectVisual visual={selected.visual} image={selected.image} />
+              <ProjectVisual
+                visual={selected.visual}
+                image={selected.image}
+                sizes="(max-width: 768px) 92vw, 640px"
+              />
             </div>
 
             {/* Content */}
@@ -229,16 +248,20 @@ export default function Projects() {
 function ProjectVisual({
   visual,
   image,
+  sizes = "(max-width: 768px) 90vw, 600px",
 }: {
   visual: Project["visual"];
   image?: string;
+  sizes?: string;
 }) {
   if (image) {
     return (
-      <img
+      <Image
         src={image}
         alt="Project visual"
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        sizes={sizes}
+        className="object-cover"
       />
     );
   }

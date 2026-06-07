@@ -111,7 +111,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="grid h-9 w-9 place-items-center rounded border border-line text-ink-dim hover:text-phosphor-200 md:hidden"
+            className="grid h-9 w-9 place-items-center rounded border border-line text-ink-dim transition-transform hover:text-phosphor-200 active:scale-90 active:text-phosphor-200 md:hidden"
             aria-label="Toggle menu"
           >
             {open ? <X size={16} /> : <Menu size={16} />}
@@ -135,7 +135,7 @@ export default function Navbar() {
                     href={l.href}
                     onClick={() => setOpen(false)}
                     className={cn(
-                      "flex items-center gap-2 rounded px-3 py-2 font-mono text-xs uppercase tracking-[0.16em] transition-colors",
+                      "flex items-center gap-2 rounded px-3 py-2 font-mono text-xs uppercase tracking-[0.16em] transition-colors active:bg-phosphor/10",
                       active === l.href.slice(1)
                         ? "bg-phosphor/10 text-phosphor-200"
                         : "text-ink-dim hover:bg-phosphor/[0.04] hover:text-ink",
@@ -152,7 +152,7 @@ export default function Navbar() {
                 <a
                   href="#contact"
                   onClick={() => setOpen(false)}
-                  className="block rounded border border-phosphor/40 bg-phosphor/10 px-3 py-2 text-center font-mono text-xs uppercase tracking-[0.16em] text-phosphor-200"
+                  className="block rounded border border-phosphor/40 bg-phosphor/10 px-3 py-2 text-center font-mono text-xs uppercase tracking-[0.16em] text-phosphor-200 transition-transform active:scale-[0.98]"
                 >
                   Transmit
                 </a>

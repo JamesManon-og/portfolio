@@ -4,7 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
-import LiquidEther from "@/components/LiquidEther";
+import SiteAtmosphere from "@/components/SiteAtmosphere";
 import FloatingLanyard from "@/components/FloatingLanyard";
 import { cn } from "@/lib/utils";
 
@@ -38,29 +38,12 @@ export default function RootLayout({
       className={cn(mono.variable, "font-sans", GeistSans.variable)}
     >
       <body className="bg-bg text-ink antialiased">
-        <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
-          <LiquidEther
-            mouseForce={20}
-            cursorSize={100}
-            isViscous={false}
-            viscous={30}
-            colors={["#5227FF", "#FF9FFC", "#B497CF"]}
-            autoDemo
-            autoSpeed={0.5}
-            autoIntensity={2.2}
-            isBounce={false}
-            resolution={0.5}
-          />
-        </div>
+        <SiteAtmosphere />
         <SmoothScroll>
           <Navbar />
           <main className="relative z-10">{children}</main>
         </SmoothScroll>
         <FloatingLanyard />
-        <div className="grain" aria-hidden />
-        <div className="vignette" aria-hidden />
-        <div className="scan-sweep" aria-hidden />
-        <div className="scanlines" aria-hidden />
       </body>
     </html>
   );
