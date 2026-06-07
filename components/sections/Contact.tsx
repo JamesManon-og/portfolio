@@ -117,7 +117,7 @@ export default function Contact() {
                   >
                     <a
                       href={l.href}
-                      className="group relative flex items-center justify-between rounded border border-line bg-bg-card/40 px-4 py-3 transition-colors hover:border-phosphor/40 hover:bg-phosphor/[0.04]"
+                      className="group relative flex items-center justify-between rounded border border-line bg-bg-card/40 px-4 py-3 transition-colors hover:border-phosphor/40 hover:bg-phosphor/[0.04] active:border-phosphor/40 active:bg-phosphor/[0.06]"
                     >
                       <span
                         aria-hidden

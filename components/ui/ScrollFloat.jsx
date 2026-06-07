@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useDeviceCapability } from '@/lib/useDeviceCapability';
 import './ScrollFloat.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,6 +21,9 @@ export default function ScrollFloat({
   stagger = 0.03,
 }) {
   const containerRef = useRef(null);
+  const { reducedMotion, tier, mounted } = useDeviceCapability();
+  // Static text (no scroll-scrubbed reveal) on reduced-motion / low-end.
+  const animationsDisabled = mounted && (reducedMotion || tier === 'lite');
 
   const splitText = useMemo(() => {
     const text = typeof children === 'string' ? children : '';
@@ -33,6 +37,7 @@ export default function ScrollFloat({
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
+    if (animationsDisabled) return; // leave text in its static, visible state
 
     const scroller =
       scrollContainerRef?.current ? scrollContainerRef.current : window;
@@ -70,7 +75,7 @@ export default function ScrollFloat({
     }, el);
 
     return () => ctx.revert();
-  }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
+  }, [animationsDisabled, scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
 
   return (
     <Tag ref={containerRef} className={`scroll-float ${containerClassName}`}>

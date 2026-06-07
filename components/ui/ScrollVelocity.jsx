@@ -8,6 +8,7 @@ import {
   useVelocity,
   useAnimationFrame,
 } from 'motion/react';
+import { useDeviceCapability } from '@/lib/useDeviceCapability';
 import './ScrollVelocity.css';
 
 function useElementWidth(ref) {
@@ -59,6 +60,9 @@ export const ScrollVelocity = ({
     scrollerStyle,
   }) {
     const baseX = useMotionValue(0);
+    const { reducedMotion, tier, mounted } = useDeviceCapability();
+    // Freeze the marquee (no per-frame work) on reduced-motion / low-end.
+    const marqueeDisabled = mounted && (reducedMotion || tier === 'lite');
     const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {};
     const { scrollY } = useScroll(scrollOptions);
     const scrollVelocity = useVelocity(scrollY);
@@ -89,6 +93,7 @@ export const ScrollVelocity = ({
 
     const directionFactor = useRef(1);
     useAnimationFrame((t, delta) => {
+      if (marqueeDisabled) return;
       let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
 
       if (velocityFactor.get() < 0) {

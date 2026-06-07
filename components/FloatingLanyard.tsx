@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useDeviceCapability } from "@/lib/useDeviceCapability";
 
 const LanyardClient = dynamic(() => import("@/components/ui/LanyardClient"), {
   ssr: false,
@@ -18,8 +19,14 @@ const LanyardClient = dynamic(() => import("@/components/ui/LanyardClient"), {
  * - Fixed full-viewport wrapper is `pointer-events-none` — never blocks
  *   clicks, scrolling, or any other page interaction.
  * - Hidden below `lg` because the 3D scene needs real estate to read.
+ * - Only mounted on the `full` capability tier, so low-end devices and
+ *   reduced-motion users never pay for Three.js + physics.
  */
 export default function FloatingLanyard() {
+  const { tier, mounted } = useDeviceCapability();
+
+  if (!mounted || tier !== "full") return null;
+
   return (
     <div
       aria-hidden
