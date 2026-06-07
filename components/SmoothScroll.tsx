@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
+import { MotionConfig } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useDeviceCapability } from "@/lib/useDeviceCapability";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,7 +13,15 @@ export default function SmoothScroll({
 }: {
   children: React.ReactNode;
 }) {
+  const { tier, mounted } = useDeviceCapability();
+
   useEffect(() => {
+    // Smooth scroll only on capable, fine-pointer, motion-OK devices. On
+    // phones / low-end / reduced-motion we use native scroll — it's smoother
+    // there and doesn't fight touch momentum. GSAP ScrollTrigger still works
+    // with native scroll, so scroll-linked animations are unaffected.
+    if (!mounted || tier !== "full") return;
+
     type LenisInstance = {
       destroy: () => void;
       raf: (t: number) => void;
@@ -48,7 +58,9 @@ export default function SmoothScroll({
       lenis?.destroy?.();
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
-  }, []);
+  }, [mounted, tier]);
 
-  return <>{children}</>;
+  // One switch makes every framer-motion animation honor the OS reduce-motion
+  // preference (parallax, entrances, hovers across the whole app).
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }

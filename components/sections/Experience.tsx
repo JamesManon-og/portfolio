@@ -108,7 +108,7 @@ export default function Experience() {
           </div>
 
           {/* Right — CardSwap stack */}
-          <div className="relative h-[780px]">
+          <div className="relative h-[460px] sm:h-[600px] md:h-[780px]">
             <CardSwap
               width={520}
               height={360}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './Folder.css';
 
 const darkenColor = (hex, percent) => {
@@ -29,6 +29,16 @@ const Folder = ({ color = '#4ade80', size = 1, items = [], onClick, className = 
   const [open, setOpen] = useState(false);
   const [paperOffsets, setPaperOffsets] = useState(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
 
+  // Coalesce mousemove updates to one state commit per frame.
+  const rafRef = useRef(null);
+  const pendingRef = useRef({});
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
   const folderBackColor = darkenColor(color, 0.08);
   const paper1 = darkenColor('#ffffff', 0.1);
   const paper2 = darkenColor('#ffffff', 0.05);
@@ -42,6 +52,19 @@ const Folder = ({ color = '#4ade80', size = 1, items = [], onClick, className = 
     onClick?.();
   };
 
+  const flushOffsets = () => {
+    rafRef.current = null;
+    const pending = pendingRef.current;
+    pendingRef.current = {};
+    setPaperOffsets(prev => {
+      const newOffsets = [...prev];
+      for (const key of Object.keys(pending)) {
+        newOffsets[key] = pending[key];
+      }
+      return newOffsets;
+    });
+  };
+
   const handlePaperMouseMove = (e, index) => {
     if (!open) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -49,14 +72,14 @@ const Folder = ({ color = '#4ade80', size = 1, items = [], onClick, className = 
     const centerY = rect.top + rect.height / 2;
     const offsetX = (e.clientX - centerX) * 0.15;
     const offsetY = (e.clientY - centerY) * 0.15;
-    setPaperOffsets(prev => {
-      const newOffsets = [...prev];
-      newOffsets[index] = { x: offsetX, y: offsetY };
-      return newOffsets;
-    });
+    pendingRef.current[index] = { x: offsetX, y: offsetY };
+    if (rafRef.current == null) {
+      rafRef.current = requestAnimationFrame(flushOffsets);
+    }
   };
 
   const handlePaperMouseLeave = (e, index) => {
+    delete pendingRef.current[index];
     setPaperOffsets(prev => {
       const newOffsets = [...prev];
       newOffsets[index] = { x: 0, y: 0 };

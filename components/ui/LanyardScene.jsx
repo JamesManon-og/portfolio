@@ -30,6 +30,8 @@ export default function LanyardScene({
   gravity = [0, -40, 0],
 }) {
   const [isMobile, setIsMobile] = useState(false);
+  // Pause rendering + physics while the tab is in the background.
+  const [frameloop, setFrameloop] = useState('always');
 
   useEffect(() => {
     const update = () => setIsMobile(window.innerWidth < 768);
@@ -38,9 +40,18 @@ export default function LanyardScene({
     return () => window.removeEventListener('resize', update);
   }, []);
 
+  useEffect(() => {
+    const onVisibility = () =>
+      setFrameloop(document.hidden ? 'never' : 'always');
+    onVisibility();
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, []);
+
   return (
     <div className="lanyard-wrapper relative h-full w-full">
       <Canvas
+        frameloop={frameloop}
         camera={{ position, fov: 20 }}
         dpr={[1, isMobile ? 1.5 : 2]}
         gl={{ alpha: true, antialias: true }}
