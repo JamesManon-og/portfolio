@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Terminal } from "lucide-react";
+import { Menu, X, Paperclip } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -54,8 +54,8 @@ export default function Navbar() {
     >
       <div
         className={cn(
-          "mt-4 flex w-[min(96%,1180px)] items-center justify-between gap-4 rounded-lg border border-line px-3 py-2.5 transition-all duration-500",
-          scrolled ? "glass shadow-soft" : "border-transparent bg-transparent",
+          "mt-4 flex w-[min(96%,1180px)] items-center justify-between gap-4 rounded-sm border border-line px-3 py-2.5 transition-all duration-500",
+          scrolled ? "glass shadow-paper" : "border-transparent bg-transparent",
         )}
       >
         <a
@@ -63,11 +63,11 @@ export default function Navbar() {
           className="group flex items-center gap-2.5 pl-2"
           aria-label="Home"
         >
-          <span className="relative grid h-7 w-7 place-items-center rounded-sm border border-phosphor/40 bg-phosphor/10">
-            <Terminal size={12} className="text-phosphor-200 phosphor-glow" />
+          <span className="relative grid h-7 w-7 place-items-center rounded-sm border border-line-strong bg-paper">
+            <Paperclip size={12} className="text-stamp" />
           </span>
-          <span className="font-mono text-sm tracking-tight text-ink">
-            OX<span className="text-ink-dim">.dev</span>
+          <span className="font-display text-sm tracking-wide text-ink">
+            CASE FILE<span className="text-ink-dim"> · J.M.</span>
           </span>
         </a>
 
@@ -77,22 +77,19 @@ export default function Navbar() {
               key={l.href}
               href={l.href}
               className={cn(
-                "relative inline-flex items-center gap-1.5 rounded px-3 py-1.5 font-mono text-xs uppercase tracking-[0.16em] transition-colors",
+                "relative inline-flex items-center gap-1.5 rounded-sm px-3 py-1.5 font-mono text-xs uppercase tracking-[0.16em] transition-colors",
                 active === l.href.slice(1)
-                  ? "text-phosphor-200"
+                  ? "text-stamp"
                   : "text-ink-dim hover:text-ink",
               )}
             >
               {active === l.href.slice(1) && (
                 <motion.span
                   layoutId="nav-active"
-                  className="absolute inset-0 rounded border border-phosphor/30 bg-phosphor/10"
+                  className="absolute inset-x-1 bottom-0.5 border-b-2 border-stamp/70"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              {/* <span className="relative text-[10px] text-ink-dimmer">
-                [{l.code}]
-              </span> */}
               <span className="relative">{l.label}</span>
             </a>
           ))}
@@ -101,17 +98,14 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <a
             href="#contact"
-            className="group hidden items-center gap-2 rounded border border-phosphor/40 bg-phosphor/10 px-3.5 py-1.5 font-mono text-xs uppercase tracking-[0.16em] text-phosphor-200 transition-all hover:bg-phosphor/20 hover:shadow-phosphor md:inline-flex"
+            className="hidden items-center gap-2 border-2 border-stamp/70 px-3.5 py-1 font-display text-xs uppercase tracking-[0.18em] text-stamp transition-all hover:bg-stamp/10 md:inline-flex"
           >
-            <span className="relative grid h-1.5 w-1.5 place-items-center">
-              <span className="absolute h-full w-full animate-ping rounded-full bg-phosphor/60" />
-            </span>
-            sync
+            Contact
           </a>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="grid h-9 w-9 place-items-center rounded border border-line text-ink-dim transition-transform hover:text-phosphor-200 active:scale-90 active:text-phosphor-200 md:hidden"
+            className="grid h-9 w-9 place-items-center rounded-sm border border-line text-ink-dim transition-transform hover:text-stamp active:scale-90 active:text-stamp md:hidden"
             aria-label="Toggle menu"
           >
             {open ? <X size={16} /> : <Menu size={16} />}
@@ -126,7 +120,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="absolute left-1/2 top-[68px] w-[min(96%,1180px)] -translate-x-1/2 rounded-lg border border-line glass p-2 md:hidden"
+            className="paper torn-edge-b absolute left-1/2 top-[68px] w-[min(96%,1180px)] -translate-x-1/2 rounded-sm border border-line p-2 pb-4 md:hidden"
           >
             <ul className="flex flex-col">
               {links.map((l) => (
@@ -135,10 +129,10 @@ export default function Navbar() {
                     href={l.href}
                     onClick={() => setOpen(false)}
                     className={cn(
-                      "flex items-center gap-2 rounded px-3 py-2 font-mono text-xs uppercase tracking-[0.16em] transition-colors active:bg-phosphor/10",
+                      "flex items-center gap-2 rounded-sm px-3 py-2 font-mono text-xs uppercase tracking-[0.16em] transition-colors active:bg-stamp/10",
                       active === l.href.slice(1)
-                        ? "bg-phosphor/10 text-phosphor-200"
-                        : "text-ink-dim hover:bg-phosphor/[0.04] hover:text-ink",
+                        ? "bg-stamp/10 text-stamp"
+                        : "text-ink-dim hover:bg-ink/[0.04] hover:text-ink",
                     )}
                   >
                     <span className="text-[10px] text-ink-dimmer">
@@ -152,9 +146,9 @@ export default function Navbar() {
                 <a
                   href="#contact"
                   onClick={() => setOpen(false)}
-                  className="block rounded border border-phosphor/40 bg-phosphor/10 px-3 py-2 text-center font-mono text-xs uppercase tracking-[0.16em] text-phosphor-200 transition-transform active:scale-[0.98]"
+                  className="block border-2 border-stamp/70 px-3 py-2 text-center font-display text-xs uppercase tracking-[0.18em] text-stamp transition-transform active:scale-[0.98]"
                 >
-                  Transmit
+                  Contact
                 </a>
               </li>
             </ul>

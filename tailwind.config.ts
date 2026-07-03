@@ -13,48 +13,51 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "var(--font-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-typewriter-body)", "Courier New", "monospace"],
+        display: ["var(--font-typewriter)", "Courier New", "monospace"],
+        hand: ["var(--font-hand)", "cursive"],
       },
       colors: {
+        // Kraft evidence board
         bg: {
-          DEFAULT: "#030604",
-          subtle: "#060a07",
-          card: "#080d09",
+          DEFAULT: "#b1946b",
+          subtle: "#a8895f",
+          card: "#9c7d55",
+          deep: "#7d6242",
         },
+        // Cream paper scraps
+        paper: {
+          DEFAULT: "#f2e8cf",
+          aged: "#e9dcb8",
+          dark: "#ddcca2",
+          edge: "#c9b485",
+        },
+        // Typewriter ink
         ink: {
-          DEFAULT: "#d8ffe0",
-          dim: "#7fbf8b",
-          dimmer: "#3f6a48",
+          DEFAULT: "#2e2418",
+          dim: "#57452f",
+          dimmer: "#7d6a4f",
         },
         line: {
-          DEFAULT: "rgba(74,222,128,0.12)",
-          strong: "rgba(74,222,128,0.22)",
+          DEFAULT: "rgba(46,36,24,0.22)",
+          strong: "rgba(46,36,24,0.4)",
         },
-        phosphor: {
-          50: "#e8ffec",
-          100: "#c4ffd0",
-          200: "#86ffa1",
-          300: "#4ade80",
-          400: "#22c55e",
-          500: "#16a34a",
-          600: "#15803d",
-          700: "#166534",
-          DEFAULT: "#4ade80",
-          glow: "rgba(74,222,128,0.55)",
+        // "KEEP CONFIDENTIAL" rubber-stamp red
+        stamp: {
+          DEFAULT: "#9b2c20",
+          bright: "#b53a2c",
+          dark: "#6f1d15",
+          faded: "rgba(155,44,32,0.55)",
         },
+        tape: "rgba(244,236,205,0.65)",
       },
       animation: {
         "fade-in": "fadeIn 0.6s ease-out forwards",
         marquee: "marquee 40s linear infinite",
         "marquee-reverse": "marquee-reverse 40s linear infinite",
-        shimmer: "shimmer 2.5s linear infinite",
-        "gradient-x": "gradient-x 8s ease infinite",
         float: "float 6s ease-in-out infinite",
-        glow: "glow 3s ease-in-out infinite",
-        scan: "scan 8s linear infinite",
-        flicker: "flicker 5s steps(2, end) infinite",
-        "crt-flicker": "crtFlicker 0.15s infinite",
+        "blink-caret": "blinkCaret 1s steps(2, start) infinite",
       },
       keyframes: {
         fadeIn: {
@@ -69,39 +72,20 @@ const config: Config = {
           "0%": { transform: "translateX(-50%)" },
           "100%": { transform: "translateX(0)" },
         },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
-        },
-        "gradient-x": {
-          "0%, 100%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-        },
         float: {
           "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-12px)" },
+          "50%": { transform: "translateY(-4px)" },
         },
-        glow: {
-          "0%, 100%": { opacity: "0.4" },
-          "50%": { opacity: "0.9" },
-        },
-        scan: {
-          "0%": { transform: "translateY(-100%)" },
-          "100%": { transform: "translateY(100vh)" },
-        },
-        flicker: {
-          "0%, 19%, 21%, 23%, 25%, 54%, 56%, 100%": { opacity: "1" },
-          "20%, 22%, 24%, 55%": { opacity: "0.6" },
-        },
-        crtFlicker: {
-          "0%": { opacity: "0.95" },
-          "50%": { opacity: "1" },
-          "100%": { opacity: "0.97" },
+        blinkCaret: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
         },
       },
       boxShadow: {
-        phosphor:
-          "0 0 0 1px rgba(74,222,128,0.18), 0 0 24px -4px rgba(74,222,128,0.35), 0 0 64px -16px rgba(74,222,128,0.25)",
+        paper:
+          "0 1px 2px rgba(46,36,24,0.18), 0 6px 16px -6px rgba(46,36,24,0.35)",
+        "paper-lift":
+          "0 2px 4px rgba(46,36,24,0.2), 0 14px 28px -10px rgba(46,36,24,0.45)",
       },
     },
   },

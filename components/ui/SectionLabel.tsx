@@ -3,6 +3,10 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+/**
+ * A file-tab chip: cream paper, typed uppercase label, case number prefix and
+ * a red wax dot — pinned slightly crooked like everything on the board.
+ */
 export default function SectionLabel({
   index,
   label,
@@ -19,14 +23,16 @@ export default function SectionLabel({
       viewport={{ once: true, amount: 0.6 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "inline-flex items-center gap-2.5 rounded border border-phosphor/30 bg-phosphor/[0.06] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-phosphor-200 backdrop-blur",
+        "paper inline-flex -rotate-1 items-center gap-2.5 rounded-sm border border-line px-3 py-1.5",
         className
       )}
     >
-      <span className="text-[9px] text-phosphor/70">[{index}]</span>
-      <span className="h-2.5 w-px bg-phosphor/40" />
-      <span className="phosphor-glow">{label}</span>
-      <span className="ml-1 h-1.5 w-1.5 animate-pulse rounded-full bg-phosphor shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
+      <span className="typed-label !text-[9px] text-ink-dimmer">
+        CASE NO. {index}
+      </span>
+      <span className="h-2.5 w-px bg-line-strong" />
+      <span className="typed-label text-ink-dim">{label}</span>
+      <span className="ml-1 h-2 w-2 rounded-full bg-stamp/80 shadow-[inset_0_1px_1px_rgba(0,0,0,0.3)]" />
     </motion.div>
   );
 }
