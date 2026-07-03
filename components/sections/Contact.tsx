@@ -9,7 +9,6 @@ import {
   Mail,
   MapPin,
   Send,
-  Twitter,
 } from "lucide-react";
 import { useState } from "react";
 import BlurReveal from "@/components/ui/BlurReveal";
@@ -22,28 +21,24 @@ const links = [
     value: "jamesmanonog@gmail.com",
     href: "mailto:jamesmanonog@gmail.com",
     icon: Mail,
-    code: "",
   },
   {
     label: "GitHub",
     value: "JamesManon-og",
     href: "https://github.com/JamesManon-og",
     icon: Github,
-    code: "",
   },
   {
     label: "LinkedIn",
     value: "James Manon-og",
     href: "https://www.linkedin.com/in/james-manon-og-0326a7314/",
     icon: Linkedin,
-    code: "",
   },
   {
     label: "Instagram",
     value: "mnngjms",
     href: "https://www.instagram.com/mnngjms/",
     icon: Instagram,
-    code: "",
   },
 ];
 
@@ -53,19 +48,11 @@ export default function Contact() {
       id="contact"
       className="relative isolate overflow-hidden border-t border-line"
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[40rem] w-[40rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(74,222,128,0.16),transparent_60%)] blur-3xl" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-phosphor/30 to-transparent" />
-      </div>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 grid-bg-tight opacity-30 mask-radial"
-      />
-
       <div className="container-mx container-px pb-12 pt-32 md:pb-20 md:pt-44">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
           <div className="lg:col-span-6">
-            <h2 className="mt-6 h-display text-5xl font-semibold tracking-tight md:text-7xl">
+            <SectionLabel index="005" label="Witness Statement" />
+            <h2 className="mt-6 h-display font-display text-4xl tracking-tight md:text-6xl">
               <ScrollFloat
                 as="span"
                 containerClassName="block"
@@ -78,7 +65,7 @@ export default function Contact() {
               </ScrollFloat>
               <ScrollFloat
                 as="span"
-                containerClassName="block gradient-text-aurora"
+                containerClassName="block text-stamp"
                 scrollStart="top bottom+=10%"
                 scrollEnd="top 35%"
                 stagger={0.025}
@@ -91,20 +78,20 @@ export default function Contact() {
               delay={0.15}
               className="mt-6 max-w-md text-base text-ink-dim"
             >
-              I'm currently accepting a small number of new collaborations. Send
-              a signal about your project and I'll get back within two business
-              days.
+              I'm currently accepting a small number of new collaborations.
+              File a statement about your project and I'll get back within two
+              business days.
             </BlurReveal>
 
             <BlurReveal
               delay={0.25}
-              className="mt-10 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-phosphor-200"
+              className="typed-label mt-10 flex items-center gap-2 !text-xs"
             >
-              <MapPin size={14} />
+              <MapPin size={14} className="text-stamp" />
               Davao City, Philippines · UTC+8
             </BlurReveal>
 
-            <ul className="mt-10 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <ul className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {links.map((l, i) => {
                 const Icon = l.icon;
                 return (
@@ -117,30 +104,22 @@ export default function Contact() {
                   >
                     <a
                       href={l.href}
-                      className="group relative flex items-center justify-between rounded border border-line bg-bg-card/40 px-4 py-3 transition-colors hover:border-phosphor/40 hover:bg-phosphor/[0.04] active:border-phosphor/40 active:bg-phosphor/[0.06]"
+                      className="paper group relative flex items-center justify-between rounded-sm px-4 py-3 transition-all hover:shadow-paper-lift"
                     >
-                      <span
-                        aria-hidden
-                        className="absolute left-1.5 top-1.5 h-1.5 w-1.5 border-l border-t border-phosphor/60"
-                      />
-                      <span
-                        aria-hidden
-                        className="absolute right-1.5 bottom-1.5 h-1.5 w-1.5 border-r border-b border-phosphor/60"
-                      />
                       <span className="flex items-center gap-3">
-                        <span className="grid h-8 w-8 place-items-center rounded border border-phosphor/30 bg-phosphor/10 text-phosphor-200">
+                        <span className="grid h-8 w-8 place-items-center rounded-sm border border-line-strong bg-paper-aged text-stamp">
                           <Icon size={14} />
                         </span>
                         <span className="flex flex-col">
-                          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-phosphor/70">
-                            {l.code} {l.label}
+                          <span className="typed-label !text-[9px]">
+                            {l.label}
                           </span>
                           <span className="text-sm text-ink">{l.value}</span>
                         </span>
                       </span>
                       <ArrowUpRight
                         size={16}
-                        className="text-phosphor/60 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-phosphor-200"
+                        className="text-ink-dimmer transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-stamp"
                       />
                     </a>
                   </motion.li>
@@ -160,125 +139,176 @@ export default function Contact() {
   );
 }
 
+type FormState = "idle" | "loading" | "sent" | "error";
+
 function ContactForm() {
-  const [state, setState] = useState<"idle" | "loading" | "sent">("idle");
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [state, setState] = useState<FormState>("idle");
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Capture before any await — React nulls currentTarget after the event.
+    const form = e.currentTarget;
+
+    const name =
+      (form.elements.namedItem("name") as HTMLInputElement)?.value.trim() || "";
+    const email =
+      (form.elements.namedItem("email") as HTMLInputElement)?.value.trim() ||
+      "";
+    const message =
+      (
+        form.elements.namedItem("message") as HTMLTextAreaElement
+      )?.value.trim() || "";
+    const botcheck =
+      (form.elements.namedItem("botcheck") as HTMLInputElement)?.checked ??
+      false;
+
+    if (!name || !message) {
+      setError("Name and statement are required.");
+      setState("error");
+      return;
+    }
+    if (!/.+@.+\..+/.test(email)) {
+      setError("A valid contact address is required.");
+      setState("error");
+      return;
+    }
+
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+    if (!accessKey) {
+      setError("Form is not configured yet — use the email link instead.");
+      setState("error");
+      return;
+    }
+
+    setError(null);
     setState("loading");
 
-    const form = e.currentTarget;
-    const name =
-      (form.elements.namedItem("name") as HTMLInputElement)?.value || "";
-    const email =
-      (form.elements.namedItem("email") as HTMLInputElement)?.value || "";
-    const message =
-      (form.elements.namedItem("message") as HTMLTextAreaElement)?.value || "";
-
-    const subject = `Project Inquiry from ${name}`;
-    const body = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-
-    setTimeout(() => {
-      window.location.href = `mailto:jamesmanonog@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      setState("sent");
-    }, 600);
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: `Portfolio inquiry from ${name}`,
+          name,
+          email,
+          message,
+          botcheck,
+        }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        form.reset();
+        setState("sent");
+      } else {
+        setError("Filing failed — please try again or use the email link.");
+        setState("error");
+      }
+    } catch {
+      setError("Network error — please try again or use the email link.");
+      setState("error");
+    }
   };
+
+  if (state === "sent") {
+    return (
+      <div className="paper tape-corners relative rounded-sm p-10 text-center md:p-14">
+        <span className="stamp text-2xl">Statement Filed</span>
+        <p className="mt-6 text-sm text-ink-dim">
+          Your statement has been logged in the case file. I'll get back to you
+          within two business days.
+        </p>
+        <button
+          type="button"
+          onClick={() => setState("idle")}
+          className="typed-label mt-6 inline-block border-b border-dashed border-line-strong pb-0.5 !text-[11px] transition-colors hover:text-stamp"
+        >
+          File another statement
+        </button>
+      </div>
+    );
+  }
 
   return (
     <form
       onSubmit={onSubmit}
-      className="relative overflow-hidden rounded border border-line bg-bg-card/60 p-6 md:p-8"
+      className="paper tape-corners ruled-paper relative rounded-sm p-6 md:p-8"
     >
-      {/* corners */}
-      <span
-        aria-hidden
-        className="absolute left-2 top-2 h-3 w-3 border-l border-t border-phosphor/60"
-      />
-      <span
-        aria-hidden
-        className="absolute right-2 top-2 h-3 w-3 border-r border-t border-phosphor/60"
-      />
-      <span
-        aria-hidden
-        className="absolute left-2 bottom-2 h-3 w-3 border-l border-b border-phosphor/60"
-      />
-      <span
-        aria-hidden
-        className="absolute right-2 bottom-2 h-3 w-3 border-r border-b border-phosphor/60"
-      />
-
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-32 right-0 h-64 w-64 rounded-full bg-[radial-gradient(circle_at_center,rgba(74,222,128,0.22),transparent_60%)] blur-2xl"
-      />
       <div className="relative">
-        <div className="flex items-center justify-between border-b border-line pb-3">
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-phosphor-200">
-            ▸ /usr/sync.exe
+        <div className="flex items-center justify-between border-b-2 border-ink/60 pb-3">
+          <span className="font-display text-xs uppercase tracking-[0.2em] text-ink">
+            Form 27-B · Witness Statement
           </span>
-          <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-phosphor/60" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-phosphor/70">
-              LINK_ACTIVE
-            </span>
-          </span>
+          <span className="stamp !rotate-0 text-[9px]">Confidential</span>
         </div>
 
-        <div className="mt-6 grid gap-4">
-          <Field id="name" label="name" placeholder="James Manon-og" />
+        {/* Honeypot — real visitors never see or tick this */}
+        <input
+          type="checkbox"
+          name="botcheck"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="absolute -left-[9999px] h-px w-px"
+        />
+
+        <div className="mt-6 grid gap-5">
+          <Field id="name" label="Name of witness" placeholder="James Manon-og" />
           <Field
             id="email"
             type="email"
-            label="email"
+            label="Contact address"
             placeholder="jamesmanonog@gmail.com"
           />
-
           <Field
             id="message"
-            label="message"
-            placeholder="// Encode your project, timeline, and what success looks like."
+            label="Statement"
+            placeholder="Describe your project, timeline, and what success looks like."
             as="textarea"
           />
         </div>
 
+        {error && (
+          <p
+            role="alert"
+            className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-stamp"
+          >
+            ✗ {error}
+          </p>
+        )}
+
         <div className="mt-6 flex items-center justify-between gap-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-phosphor/60">
-            will reply ≤ 48h
-          </span>
+          <span className="typed-label !text-[9px]">will reply ≤ 48h</span>
           <motion.button
             type="submit"
             whileTap={{ scale: 0.97 }}
-            disabled={state !== "idle"}
-            className="group relative inline-flex items-center gap-2 overflow-hidden rounded border border-phosphor/50 bg-phosphor/15 px-5 py-2.5 font-mono text-xs uppercase tracking-[0.22em] text-phosphor-200 transition-all hover:bg-phosphor/25 hover:shadow-phosphor disabled:opacity-80"
+            disabled={state === "loading"}
+            className="inline-flex items-center gap-2 border-[3px] border-double border-stamp px-5 py-2.5 font-display text-xs uppercase tracking-[0.2em] text-stamp transition-all hover:bg-stamp/10 disabled:opacity-60"
           >
-            <span className="relative z-10 flex items-center gap-2 phosphor-glow">
-              {state === "sent" ? (
-                <>
-                  Synced <Send size={14} />
-                </>
-              ) : state === "loading" ? (
-                <>
-                  Syncing
-                  <span className="ml-1 flex items-center gap-0.5">
-                    {[0, 1, 2].map((d) => (
-                      <motion.span
-                        key={d}
-                        animate={{ opacity: [0.2, 1, 0.2] }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity,
-                          delay: d * 0.15,
-                        }}
-                        className="h-1 w-1 rounded-full bg-phosphor"
-                      />
-                    ))}
-                  </span>
-                </>
-              ) : (
-                <>
-                  Sync <Send size={14} />
-                </>
-              )}
-            </span>
+            {state === "loading" ? (
+              <>
+                Filing
+                <span className="ml-1 flex items-center gap-0.5">
+                  {[0, 1, 2].map((d) => (
+                    <motion.span
+                      key={d}
+                      animate={{ opacity: [0.2, 1, 0.2] }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        delay: d * 0.15,
+                      }}
+                      className="h-1 w-1 rounded-full bg-stamp"
+                    />
+                  ))}
+                </span>
+              </>
+            ) : (
+              <>
+                File Statement <Send size={14} />
+              </>
+            )}
           </motion.button>
         </div>
       </div>
@@ -292,29 +322,25 @@ function Field({
   placeholder,
   type = "text",
   as = "input",
-  optional,
 }: {
   id: string;
   label: string;
   placeholder: string;
   type?: string;
   as?: "input" | "textarea";
-  optional?: boolean;
 }) {
   const Cmp: "input" | "textarea" = as;
   return (
     <label htmlFor={id} className="group block">
-      <span className="mb-1.5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-phosphor/70">
-        <span>▸ {label}</span>
-        {optional && <span className="text-phosphor/40">// optional</span>}
-      </span>
+      <span className="typed-label mb-1.5 block">{label}</span>
       <Cmp
         id={id}
         name={id}
         type={type}
+        required
         rows={as === "textarea" ? 5 : undefined}
         placeholder={placeholder}
-        className="w-full resize-none rounded border border-line bg-black/40 px-4 py-3 font-mono text-sm text-ink placeholder:text-ink-dimmer outline-none transition-colors focus:border-phosphor/50 focus:bg-phosphor/[0.04] focus:shadow-[0_0_0_4px_rgba(74,222,128,0.08)]"
+        className="w-full resize-none border-b border-line-strong bg-transparent px-1 py-2 font-mono text-sm text-ink outline-none transition-colors placeholder:text-ink-dimmer/70 focus:border-stamp"
       />
     </label>
   );
@@ -322,27 +348,27 @@ function Field({
 
 function Footer() {
   return (
-    <footer className="mt-24 border-t border-line pt-10">
+    <footer className="mt-24 border-t border-line-strong pt-10">
       <div className="flex flex-col gap-10">
-        {/* Oversized wordmark — now uses the full row width */}
+        {/* Oversized faded stamp wordmark */}
         <div className="select-none overflow-hidden">
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="h-display text-balance text-[clamp(3.5rem,13vw,10rem)] font-semibold leading-[0.85] tracking-tighter text-phosphor/15 phosphor-glow"
+            className="h-display text-balance font-display text-[clamp(3rem,11vw,9rem)] leading-[0.9] text-stamp/20"
           >
             JAMES MANON-OG
           </motion.div>
         </div>
 
-        <div className="flex flex-col items-start justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.18em] text-phosphor/60 md:flex-row md:items-center">
+        <div className="flex flex-col items-start justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-dim md:flex-row md:items-center">
           <div className="flex flex-wrap items-center gap-3">
-            <span>© 2026 made to last! </span>
+            <span>© 2026 made to last!</span>
           </div>
           <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-phosphor-200">
+            <a href="#" className="transition-colors hover:text-stamp">
               again!
             </a>
           </div>

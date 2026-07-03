@@ -1,16 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Special_Elite, Courier_Prime, Caveat } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Navbar from "@/components/Navbar";
 import SiteAtmosphere from "@/components/SiteAtmosphere";
-import FloatingLanyard from "@/components/FloatingLanyard";
 import { cn } from "@/lib/utils";
 
-const mono = JetBrains_Mono({
+// Special Elite ships weight 400 only.
+const typewriter = Special_Elite({
   subsets: ["latin"],
-  variable: "--font-mono",
+  weight: "400",
+  variable: "--font-typewriter",
+  display: "swap",
+});
+
+const typewriterBody = Courier_Prime({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-typewriter-body",
+  display: "swap",
+});
+
+const hand = Caveat({
+  subsets: ["latin"],
+  variable: "--font-hand",
   display: "swap",
 });
 
@@ -22,7 +36,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#030604",
+  themeColor: "#b1946b",
   width: "device-width",
   initialScale: 1,
 };
@@ -35,7 +49,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(mono.variable, "font-sans", GeistSans.variable)}
+      className={cn(
+        typewriter.variable,
+        typewriterBody.variable,
+        hand.variable,
+        GeistSans.variable,
+        "font-sans"
+      )}
     >
       <body className="bg-bg text-ink antialiased">
         <SiteAtmosphere />
@@ -43,7 +63,6 @@ export default function RootLayout({
           <Navbar />
           <main className="relative z-10">{children}</main>
         </SmoothScroll>
-        <FloatingLanyard />
       </body>
     </html>
   );

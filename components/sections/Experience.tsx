@@ -1,18 +1,19 @@
 "use client";
 
+import { motion } from "framer-motion";
 import BlurReveal from "@/components/ui/BlurReveal";
-import CardSwap, { Card } from "@/components/ui/CardSwap";
 import SectionLabel from "@/components/ui/SectionLabel";
 import ScrollFloat from "@/components/ui/ScrollFloat";
+import { cn } from "@/lib/utils";
 
 const items = [
   {
     period: "Jan 2025 — June 2026",
     role: "Full Stack Developer",
-    company: " Samahan System Developer",
+    company: "Samahan System Developer",
     location: "Davao City",
     summary:
-      " Led university-wide system projects concentrating on backend development and frotend management.",
+      "Led university-wide system projects concentrating on backend development and frontend management.",
     stack: [
       "React",
       "NextJS",
@@ -28,7 +29,7 @@ const items = [
     company: "Orange & Bronze Software Labs, Inc.",
     location: "Makati City",
     summary:
-      "Specialized in backend systems within enterprise-grade software development at a reading tintech company in the Philippines.",
+      "Specialized in backend systems within enterprise-grade software development at a leading fintech company in the Philippines.",
     stack: [
       "Springboot",
       "Java",
@@ -60,22 +61,19 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="relative isolate overflow-hidden pt-16 pb-32 md:pt-20 md:pb-44"
+      className="relative isolate overflow-hidden pb-32 pt-16 md:pb-44 md:pt-20"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 dot-bg opacity-30 mask-radial"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-phosphor/30 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-line-strong to-transparent"
       />
 
       <div className="container-mx container-px">
-        <div className="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-8">
+        <div className="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-12">
           {/* Left — heading + description */}
           <div className="flex flex-col justify-center">
-            <h2 className="mt-6 h-display max-w-3xl text-5xl font-semibold tracking-tight md:text-7xl">
+            <SectionLabel index="002" label="Service Record" />
+            <h2 className="mt-6 h-display max-w-3xl font-display text-5xl tracking-tight md:text-6xl">
               <ScrollFloat
                 as="span"
                 containerClassName="block"
@@ -88,7 +86,7 @@ export default function Experience() {
               </ScrollFloat>
               <ScrollFloat
                 as="span"
-                containerClassName="block text-ink-dim text-4xl md:text-4xl"
+                containerClassName="block text-ink-dim text-3xl md:text-4xl"
                 scrollStart="top bottom+=10%"
                 scrollEnd="top 35%"
                 stagger={0.02}
@@ -107,55 +105,56 @@ export default function Experience() {
             </BlurReveal>
           </div>
 
-          {/* Right — CardSwap stack */}
-          <div className="relative h-[460px] sm:h-[600px] md:h-[780px]">
-            <CardSwap
-              width={520}
-              height={360}
-              cardDistance={65}
-              verticalDistance={70}
-              delay={3500}
-              pauseOnHover
-              skewAmount={4}
-              easing="elastic"
-            >
-              {items.map((item) => (
-                <Card
-                  key={item.company}
-                  className="!bg-bg-card/90 !border-line p-9"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-phosphor/70">
+          {/* Right — stacked index cards, pinned crooked to the board */}
+          <div className="flex flex-col gap-10 py-6">
+            {items.map((item, i) => (
+              <motion.article
+                key={item.company}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{
+                  duration: 0.7,
+                  delay: i * 0.1,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className={cn(
+                  "paper tape-x relative rounded-sm p-7 transition-all duration-300 hover:rotate-0 hover:shadow-paper-lift md:p-8",
+                  i % 2 === 0 ? "-rotate-1" : "rotate-1"
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="typed-label">CASE NO. 00{i + 1}</span>
+                      <span className="inline-block border border-dashed border-line-strong px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-dim">
                         {item.period}
-                      </p>
-                      <h3 className="mt-3 text-xl font-medium tracking-tight text-white">
-                        {item.role}
-                      </h3>
-                      <p className="mt-1 text-base text-phosphor-200">
-                        ◇ {item.company}
-                      </p>
+                      </span>
                     </div>
-                    <span className="shrink-0 font-mono text-xs text-ink-dimmer">
-                      {item.location}
-                    </span>
+                    <h3 className="mt-3 font-display text-xl tracking-tight text-ink">
+                      {item.role}
+                    </h3>
+                    <p className="mt-1 inline-block bg-stamp/15 px-1 font-mono text-sm font-bold text-stamp">
+                      {item.company}
+                    </p>
                   </div>
-                  <p className="mt-5 text-base leading-relaxed text-ink-dim line-clamp-3">
-                    {item.summary}
-                  </p>
-                  <ul className="mt-6 flex flex-wrap gap-2">
-                    {item.stack.map((s) => (
-                      <li
-                        key={s}
-                        className="rounded border border-line bg-phosphor/[0.04] px-3 py-1.5 font-mono text-xs text-phosphor-200"
-                      >
-                        {s}
-                      </li>
-                    ))}
-                  </ul>
-                </Card>
-              ))}
-            </CardSwap>
+                  <span className="typed-label shrink-0">{item.location}</span>
+                </div>
+                <p className="mt-4 text-base leading-relaxed text-ink-dim">
+                  {item.summary}
+                </p>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {item.stack.map((s) => (
+                    <li
+                      key={s}
+                      className="border border-line bg-paper-aged px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.08em] text-ink-dim"
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </motion.article>
+            ))}
           </div>
         </div>
       </div>
