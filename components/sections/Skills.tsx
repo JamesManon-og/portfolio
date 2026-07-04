@@ -126,8 +126,13 @@ export default function Skills() {
       <div className="container-mx container-px">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <SectionLabel index="004" label="Evidence Inventory" />
-            <h2 className="mt-6 h-display max-w-3xl font-display text-4xl tracking-tight md:text-6xl">
+            <div className="flex flex-wrap items-center gap-4">
+              <SectionLabel index="004" label="Evidence Inventory" />
+              <span className="stamp-box text-[9px]">
+                Authorized equipment
+              </span>
+            </div>
+            <h2 className="mt-6 h-display max-w-3xl font-display text-5xl tracking-tight md:text-7xl">
               <ScrollFloat
                 as="span"
                 containerClassName="block"
@@ -158,7 +163,14 @@ export default function Skills() {
           ))}
         </div>
 
-        <ScrollVelocity
+        <div className="relative">
+          <span
+            aria-hidden
+            className="stamp-diagonal left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-8xl"
+          >
+            Classified
+          </span>
+          <ScrollVelocity
           velocity={60}
           numCopies={4}
           texts={[
@@ -172,11 +184,49 @@ export default function Skills() {
               )),
           ]}
           scrollerStyle={{ gap: "10px", padding: "6px 0" }}
-        />
+          />
+        </div>
       </div>
     </section>
   );
 }
+
+// One distinct sheet per card: different paper stock, fold pattern, rip,
+// fastener and shelf offset — like four unrelated pages pinned to the board.
+const skillDress = [
+  {
+    outer: "tape-x -rotate-1",
+    pin: false,
+    surface: "paper crease-d1",
+    torn: "torn-3",
+    stain: false,
+    dogEar: false,
+  },
+  {
+    outer: "rotate-[1.25deg] md:mt-6",
+    pin: true,
+    surface: "paper-grid crease-h",
+    torn: "torn-1",
+    stain: true,
+    dogEar: false,
+  },
+  {
+    outer: "tape-corners -rotate-[0.5deg]",
+    pin: false,
+    surface: "paper-aged ruled-paper",
+    torn: "torn-4",
+    stain: false,
+    dogEar: false,
+  },
+  {
+    outer: "rotate-[0.75deg] md:mt-6",
+    pin: false,
+    surface: "paper-old crease-x",
+    torn: "torn-2",
+    stain: false,
+    dogEar: true,
+  },
+];
 
 function SkillCard({
   category,
@@ -197,10 +247,21 @@ function SkillCard({
         delay: index * 0.08,
       }}
       whileHover={{ y: -4, rotate: 0 }}
-      className={`paper-aged tape-x group relative isolate rounded-sm p-6 transition-shadow hover:shadow-paper-lift ${
-        index % 2 === 0 ? "-rotate-1" : "rotate-1"
-      }`}
+      className={`torn-shadow group relative ${skillDress[index].outer}`}
     >
+      {skillDress[index].pin && <span className="pushpin" aria-hidden />}
+      <div
+        className={`relative isolate p-6 ${skillDress[index].surface} ${
+          skillDress[index].torn
+        } ${skillDress[index].dogEar ? "dog-ear" : ""}`}
+      >
+        {skillDress[index].stain && (
+          <span
+            className="stain-blot"
+            style={{ top: 40, right: -20 }}
+            aria-hidden
+          />
+        )}
       <div className="flex items-center justify-between">
         <div className="grid h-11 w-11 place-items-center rounded-sm border border-line-strong bg-paper">
           <Icon className="text-stamp" size={20} strokeWidth={1.6} />
@@ -224,6 +285,7 @@ function SkillCard({
       <div className="mt-5 border-t border-dashed border-line-strong" />
       <div className="typed-label mt-2 !text-[9px]">
         LOGGED — ITEM {index + 1}/4
+      </div>
       </div>
     </motion.div>
   );

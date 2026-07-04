@@ -6,7 +6,37 @@ import SectionLabel from "@/components/ui/SectionLabel";
 import ScrollFloat from "@/components/ui/ScrollFloat";
 import Polaroid from "@/components/ui/Polaroid";
 import RiskLevel from "@/components/ui/RiskLevel";
+import EvidenceTag from "@/components/ui/EvidenceTag";
 import { cn } from "@/lib/utils";
+
+// Per-card dressing so each exhibit reads as its own artifact: distinct
+// paper stock, fold, rip, fastener and stain per card.
+const dress = [
+  {
+    fastener: "tape" as const,
+    surface: "paper",
+    torn: "torn-4",
+    rotate: "-rotate-1",
+    stain: false,
+    dogEar: false,
+  },
+  {
+    fastener: "pin" as const,
+    surface: "paper-aged crease-d1",
+    torn: "torn-2",
+    rotate: "rotate-[1.75deg]",
+    stain: true,
+    dogEar: false,
+  },
+  {
+    fastener: "tag" as const,
+    surface: "paper-old crease-h",
+    torn: "torn-3",
+    rotate: "-rotate-[0.5deg]",
+    stain: false,
+    dogEar: true,
+  },
+];
 
 type Project = {
   title: string;
@@ -79,7 +109,7 @@ export default function Projects() {
       <div className="container-mx container-px">
         <div className="mb-16 flex flex-col items-start justify-center gap-6 md:mb-24">
           <SectionLabel index="003" label="Exhibits" />
-          <h2 className="mt-2 h-display max-w-3xl font-display text-5xl tracking-tight md:text-7xl">
+          <h2 className="mt-2 h-display max-w-3xl font-display text-6xl tracking-tight md:text-7xl lg:text-8xl">
             <ScrollFloat
               as="span"
               containerClassName="block"
@@ -117,10 +147,36 @@ export default function Projects() {
                 ease: [0.22, 1, 0.36, 1],
               }}
               className={cn(
-                "paper tape-corners relative flex flex-col rounded-sm p-6 transition-all duration-300 hover:rotate-0 hover:shadow-paper-lift",
-                i % 2 === 0 ? "-rotate-1" : "rotate-[1.5deg]"
+                "torn-shadow relative flex transition-all duration-300 hover:rotate-0",
+                dress[i].rotate,
+                dress[i].fastener === "tape" && "tape-corners"
               )}
             >
+              {dress[i].fastener === "pin" && (
+                <span className="pushpin" aria-hidden />
+              )}
+              {dress[i].fastener === "tag" && (
+                <EvidenceTag
+                  lines={[`EXHIBIT ${p.exhibit}`, `FILED ${p.year}`]}
+                  rotate={8}
+                  className="absolute -top-2 right-4 z-10 hidden xl:block"
+                />
+              )}
+              <div
+                className={cn(
+                  "relative flex flex-1 flex-col p-6",
+                  dress[i].surface,
+                  dress[i].torn,
+                  dress[i].dogEar && "dog-ear"
+                )}
+              >
+                {dress[i].stain && (
+                  <span
+                    className="stain-ring"
+                    style={{ bottom: 90, right: 18 }}
+                    aria-hidden
+                  />
+                )}
               <div className="flex items-start justify-between gap-3">
                 <span className="stamp text-sm">Exhibit {p.exhibit}</span>
                 <span className="typed-label mt-1">FILED {p.year}</span>
@@ -159,25 +215,31 @@ export default function Projects() {
                 ))}
               </ul>
 
-              <div className="mt-6 flex items-center gap-3 border-t border-dashed border-line-strong pt-4">
-                {p.href !== "#" && (
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-dashed border-line-strong pt-4">
+                <div className="flex items-center gap-3">
+                  {p.href !== "#" && (
+                    <a
+                      href={p.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-stamp transition-colors hover:text-stamp-dark"
+                    >
+                      [ View Exhibit <ArrowUpRight size={12} /> ]
+                    </a>
+                  )}
                   <a
-                    href={p.href}
+                    href={p.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-stamp transition-colors hover:text-stamp-dark"
+                    className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-dim transition-colors hover:text-ink"
                   >
-                    [ View Exhibit <ArrowUpRight size={12} /> ]
+                    [ Source <Github size={12} /> ]
                   </a>
-                )}
-                <a
-                  href={p.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-dim transition-colors hover:text-ink"
-                >
-                  [ Source <Github size={12} /> ]
-                </a>
+                </div>
+                <span className="stamp-box !rotate-2 text-[9px]">
+                  {p.href !== "#" ? "Approved for release" : "Sealed"}
+                </span>
+              </div>
               </div>
             </motion.article>
           ))}

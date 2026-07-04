@@ -14,6 +14,7 @@ import { useState } from "react";
 import BlurReveal from "@/components/ui/BlurReveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import ScrollFloat from "@/components/ui/ScrollFloat";
+import FingerprintMark from "@/components/ui/FingerprintMark";
 
 const links = [
   {
@@ -52,7 +53,7 @@ export default function Contact() {
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
           <div className="lg:col-span-6">
             <SectionLabel index="005" label="Witness Statement" />
-            <h2 className="mt-6 h-display font-display text-4xl tracking-tight md:text-6xl">
+            <h2 className="mt-6 h-display font-display text-5xl tracking-tight md:text-7xl">
               <ScrollFloat
                 as="span"
                 containerClassName="block"
@@ -213,27 +214,43 @@ function ContactForm() {
 
   if (state === "sent") {
     return (
-      <div className="paper tape-corners relative rounded-sm p-10 text-center md:p-14">
-        <span className="stamp text-2xl">Statement Filed</span>
-        <p className="mt-6 text-sm text-ink-dim">
-          Your statement has been logged in the case file. I'll get back to you
-          within two business days.
-        </p>
-        <button
-          type="button"
-          onClick={() => setState("idle")}
-          className="typed-label mt-6 inline-block border-b border-dashed border-line-strong pb-0.5 !text-[11px] transition-colors hover:text-stamp"
-        >
-          File another statement
-        </button>
+      <div className="torn-shadow relative">
+        <span className="pushpin" aria-hidden />
+        <div className="paper-aged crease-d2 torn-1 relative p-10 text-center md:p-14">
+          <span className="stamp text-2xl">Statement Filed</span>
+          <div className="mt-4 flex justify-center">
+            <span className="date-stamp text-[10px]">
+              RECEIVED ·{" "}
+              {new Date()
+                .toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "2-digit",
+                  year: "numeric",
+                })
+                .toUpperCase()}
+            </span>
+          </div>
+          <p className="mt-5 text-sm text-ink-dim">
+            Your statement has been logged in the case file. I'll get back to
+            you within two business days.
+          </p>
+          <button
+            type="button"
+            onClick={() => setState("idle")}
+            className="typed-label mt-6 inline-block border-b border-dashed border-line-strong pb-0.5 !text-[11px] transition-colors hover:text-stamp"
+          >
+            File another statement
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
+    <div className="torn-shadow tape-corners relative">
     <form
       onSubmit={onSubmit}
-      className="paper tape-corners ruled-paper relative rounded-sm p-6 md:p-8"
+      className="paper ruled-paper torn-4 relative p-6 md:p-8"
     >
       <div className="relative">
         <div className="flex items-center justify-between border-b-2 border-ink/60 pb-3">
@@ -264,7 +281,7 @@ function ContactForm() {
           <Field
             id="message"
             label="Statement"
-            placeholder="Describe your project, timeline, and what success looks like."
+            placeholder="“Describe your project, timeline, and what success looks like.”"
             as="textarea"
           />
         </div>
@@ -278,7 +295,16 @@ function ContactForm() {
           </p>
         )}
 
-        <div className="mt-6 flex items-center justify-between gap-4">
+        {/* Signature line */}
+        <div className="mt-6 flex items-end gap-3 border-t border-dashed border-line-strong pt-4">
+          <span className="typed-label !text-[9px]">Signed:</span>
+          <span className="font-hand text-2xl leading-none text-ink-dim">
+            James
+          </span>
+          <FingerprintMark size={26} rotate={-8} className="text-stamp/25" />
+        </div>
+
+        <div className="mt-5 flex items-center justify-between gap-4">
           <span className="typed-label !text-[9px]">will reply ≤ 48h</span>
           <motion.button
             type="submit"
@@ -313,6 +339,7 @@ function ContactForm() {
         </div>
       </div>
     </form>
+    </div>
   );
 }
 
@@ -351,7 +378,20 @@ function Footer() {
     <footer className="mt-24 border-t border-line-strong pt-10">
       <div className="flex flex-col gap-10">
         {/* Oversized faded stamp wordmark */}
-        <div className="select-none overflow-hidden">
+        <div className="relative select-none overflow-hidden">
+          <div className="mb-6 flex justify-center">
+            <span className="stamp-box text-center text-xs md:text-sm">
+              <span className="block">Archived</span>
+              <span className="block text-[0.6em] tracking-[0.3em]">
+                Evidence Locked
+              </span>
+            </span>
+          </div>
+          <FingerprintMark
+            size={64}
+            rotate={18}
+            className="absolute bottom-0 right-4 text-ink/10"
+          />
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}

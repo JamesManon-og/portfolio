@@ -6,6 +6,10 @@ import { useRef } from "react";
 import BlurReveal from "@/components/ui/BlurReveal";
 import TypewriterText from "@/components/ui/TypewriterText";
 import Polaroid from "@/components/ui/Polaroid";
+import RiskLevel from "@/components/ui/RiskLevel";
+import FingerprintMark from "@/components/ui/FingerprintMark";
+import BinderClip from "@/components/ui/BinderClip";
+import EvidenceTag from "@/components/ui/EvidenceTag";
 import { useDeviceCapability } from "@/lib/useDeviceCapability";
 
 export default function About() {
@@ -42,15 +46,13 @@ export default function About() {
         <BlurReveal>
           <div className="flex flex-wrap items-center gap-4">
             <span className="stamp text-lg md:text-xl">Evidence File</span>
-            <span className="typed-label">
-              FILE NO. 001 — MANON-OG, JAMES · DAVAO CITY, PH
-            </span>
+            <span className="typed-label">FILE NO. 001 · OPENED 2022</span>
           </div>
         </BlurReveal>
 
         <div className="mt-8 grid items-start gap-10 md:grid-cols-12">
           <div className="md:col-span-7">
-            <h1 className="h-display font-display text-[clamp(2.2rem,7vw,5.5rem)] text-ink">
+            <h1 className="h-display font-display text-[clamp(2.6rem,8vw,6.75rem)] text-ink">
               <TypewriterText
                 text="Hello I'm Ox,"
                 speed={55}
@@ -68,18 +70,60 @@ export default function About() {
             </h1>
 
             <BlurReveal delay={0.65}>
-              <div className="paper tape-corners relative mt-10 max-w-2xl -rotate-1 rounded-sm p-6">
-                <span className="typed-label">SUBJECT PROFILE</span>
-                <p className="mt-3 text-balance text-base leading-relaxed text-ink-dim md:text-lg">
-                  My name is{" "}
-                  <span className="bg-stamp/15 px-1 font-mono font-bold text-stamp">
-                    James Manon-og
-                  </span>{" "}
-                  — full-stack engineer and designer based in the Philippines.
-                  For the past four years, I’ve been building fast, accessible,
-                  and quietly beautiful products at the intersection of design
-                  systems, infrastructure, and AI.
-                </p>
+              <div className="tape-corners relative mt-10 max-w-2xl -rotate-1">
+                <div className="paper relative rounded-sm p-6 pb-8">
+                  <span className="typed-label">SUBJECT PROFILE</span>
+                  <p className="mt-3 text-balance text-base leading-relaxed text-ink-dim md:text-lg">
+                    My name is{" "}
+                    <span className="bg-stamp/15 px-1 font-mono font-bold text-stamp">
+                      James Manon-og
+                    </span>{" "}
+                    — full-stack engineer and designer based in the
+                    Philippines. For the past four years, I’ve been building
+                    fast, accessible, and quietly beautiful products at the
+                    intersection of design systems, infrastructure, and AI.
+                  </p>
+
+                  {/* Typed dossier fields */}
+                  <dl className="mt-5 grid gap-x-8 gap-y-2 border-t border-dashed border-line-strong pt-4 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-dim sm:grid-cols-2">
+                    <div className="flex gap-2">
+                      <dt className="text-ink-dimmer">Name:</dt>
+                      <dd>Manon-og, James</dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="text-ink-dimmer">Alias:</dt>
+                      <dd className="bg-stamp/15 px-1 font-bold text-stamp">
+                        "OX"
+                      </dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="text-ink-dimmer">Location:</dt>
+                      <dd>Davao City, PH</dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="text-ink-dimmer">Status:</dt>
+                      <dd>Active — open for work</dd>
+                    </div>
+                    <div className="flex gap-2 sm:col-span-2">
+                      <dt className="text-ink-dimmer">Known affiliates:</dt>
+                      <dd
+                        className="redacted redacted-hover"
+                        title="declassify"
+                      >
+                        coffee shops
+                      </dd>
+                    </div>
+                  </dl>
+
+                  <div className="mt-4 flex items-end justify-between">
+                    <RiskLevel label="THREAT LEVEL" level={5} />
+                    <FingerprintMark
+                      size={44}
+                      rotate={12}
+                      className="text-ink/15"
+                    />
+                  </div>
+                </div>
               </div>
             </BlurReveal>
 
@@ -110,15 +154,28 @@ export default function About() {
             delay={0.5}
             className="hidden justify-center md:col-span-5 md:flex md:justify-end"
           >
-            <Polaroid
-              src="/images/myImage.jpg"
-              alt="Portrait of James Manon-og"
-              caption="the developer, 2026"
-              rotate={3}
-              taped
-              priority
-              className="w-[min(100%,320px)]"
-            />
+            <div className="relative">
+              <Polaroid
+                src="/images/myImage.jpg"
+                alt="Portrait of James Manon-og"
+                caption="the developer, 2026"
+                rotate={3}
+                priority
+                className="w-[min(100%,320px)]"
+              />
+              <BinderClip
+                size={54}
+                className="absolute -top-7 left-1/2 z-10 -translate-x-1/2 rotate-2"
+              />
+              <span className="stamp-box absolute -right-6 top-8 z-10 rotate-[8deg] text-xl md:text-2xl">
+                Top Secret
+              </span>
+              <EvidenceTag
+                lines={["EVIDENCE TAG: 001-A", "FILED BY: J.M.", "DATE: 2026"]}
+                rotate={-7}
+                className="absolute -bottom-32 left-2 z-10 hidden lg:block"
+              />
+            </div>
           </BlurReveal>
         </div>
 
