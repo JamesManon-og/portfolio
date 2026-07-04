@@ -25,6 +25,9 @@ export default function SiteAtmosphere() {
         className="kraft-bg pointer-events-none fixed inset-0 z-0"
       />
 
+      {/* Stains, scratches, scuffed corners — static gradients, always on */}
+      <div className="board-damage" aria-hidden />
+
       {/* Warm vignette — static gradient, cheap, keep it everywhere */}
       <div className="vignette" aria-hidden />
 
