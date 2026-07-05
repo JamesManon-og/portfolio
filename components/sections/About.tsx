@@ -54,14 +54,14 @@ export default function About() {
           <div className="md:col-span-7">
             <h1 className="h-display font-display text-[clamp(2.6rem,8vw,6.75rem)] text-ink">
               <TypewriterText
-                text="Hello I'm Ox,"
+                text="Greetings!"
                 speed={55}
                 delay={200}
                 as="span"
                 className="block"
               />
               <TypewriterText
-                text="Greetings!"
+                text="Call me Ox"
                 speed={55}
                 delay={1200}
                 as="span"
@@ -74,14 +74,19 @@ export default function About() {
                 <div className="paper relative rounded-sm p-6 pb-8">
                   <span className="typed-label">SUBJECT PROFILE</span>
                   <p className="mt-3 text-balance text-base leading-relaxed text-ink-dim md:text-lg">
-                    My name is{" "}
+                    My full name is{" "}
                     <span className="bg-stamp/15 px-1 font-mono font-bold text-stamp">
                       James Manon-og
                     </span>{" "}
-                    — full-stack engineer and designer based in the
-                    Philippines. For the past four years, I’ve been building
-                    fast, accessible, and quietly beautiful products at the
-                    intersection of design systems, infrastructure, and AI.
+                    a software engineer specializing in full-stack engineer
+                    driven by a passion for building products that are not only
+                    functional, but meaningful. Over the past four years, I've
+                    dedicated myself to crafting fast, accessible, and
+                    thoughtfully engineered digital experiences, working at the
+                    intersection of scalable architecture, robust
+                    infrastructure, and AI. I'm deeply motivated by the
+                    challenge of turning complex ideas into intuitive, elegant
+                    solutions that create real impact.
                   </p>
 
                   {/* Typed dossier fields */}

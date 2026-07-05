@@ -128,11 +128,9 @@ export default function Skills() {
           <div>
             <div className="flex flex-wrap items-center gap-4">
               <SectionLabel index="004" label="Evidence Inventory" />
-              <span className="stamp-box text-[9px]">
-                Authorized equipment
-              </span>
+              <span className="stamp-box text-[9px]">Authorized equipment</span>
             </div>
-            <h2 className="mt-6 h-display max-w-3xl font-display text-5xl tracking-tight md:text-7xl">
+            <h2 className="mt-6 h-display max-w-4xl font-display text-5xl tracking-tight md:text-7xl">
               <ScrollFloat
                 as="span"
                 containerClassName="block"
@@ -151,7 +149,7 @@ export default function Skills() {
                 stagger={0.025}
                 animationDuration={1.2}
               >
-                {" I use to build and ship."}
+                {"I use to build and ship."}
               </ScrollFloat>
             </h2>
           </div>
@@ -171,19 +169,19 @@ export default function Skills() {
             Classified
           </span>
           <ScrollVelocity
-          velocity={60}
-          numCopies={4}
-          texts={[
-            techMarquee.map((t, i) => (
-              <TechChip key={i} name={t.name} Icon={t.icon} />
-            )),
-            [...techMarquee]
-              .reverse()
-              .map((t, i) => (
-                <TechChip key={i} name={t.name} Icon={t.icon} muted />
+            velocity={60}
+            numCopies={4}
+            texts={[
+              techMarquee.map((t, i) => (
+                <TechChip key={i} name={t.name} Icon={t.icon} />
               )),
-          ]}
-          scrollerStyle={{ gap: "10px", padding: "6px 0" }}
+              [...techMarquee]
+                .reverse()
+                .map((t, i) => (
+                  <TechChip key={i} name={t.name} Icon={t.icon} muted />
+                )),
+            ]}
+            scrollerStyle={{ gap: "10px", padding: "6px 0" }}
           />
         </div>
       </div>
@@ -262,30 +260,33 @@ function SkillCard({
             aria-hidden
           />
         )}
-      <div className="flex items-center justify-between">
-        <div className="grid h-11 w-11 place-items-center rounded-sm border border-line-strong bg-paper">
-          <Icon className="text-stamp" size={20} strokeWidth={1.6} />
+        <div className="flex items-center justify-between">
+          <div className="grid h-11 w-11 place-items-center rounded-sm border border-line-strong bg-paper">
+            <Icon className="text-stamp" size={20} strokeWidth={1.6} />
+          </div>
+          <span className="typed-label">▸ {category.designation}</span>
         </div>
-        <span className="typed-label">▸ {category.designation}</span>
-      </div>
 
-      <h3 className="mt-6 font-display text-xl tracking-tight text-ink">
-        {category.title}
-      </h3>
-      <ul className="mt-4 space-y-1.5">
-        {category.skills.map((s) => (
-          <li key={s} className="flex items-center gap-2 text-sm text-ink-dim">
-            <span className="font-mono text-[11px] leading-none text-stamp">
-              ×
-            </span>
-            {s}
-          </li>
-        ))}
-      </ul>
-      <div className="mt-5 border-t border-dashed border-line-strong" />
-      <div className="typed-label mt-2 !text-[9px]">
-        LOGGED — ITEM {index + 1}/4
-      </div>
+        <h3 className="mt-6 font-display text-xl tracking-tight text-ink">
+          {category.title}
+        </h3>
+        <ul className="mt-4 space-y-1.5">
+          {category.skills.map((s) => (
+            <li
+              key={s}
+              className="flex items-center gap-2 text-sm text-ink-dim"
+            >
+              <span className="font-mono text-[11px] leading-none text-stamp">
+                ×
+              </span>
+              {s}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-5 border-t border-dashed border-line-strong" />
+        <div className="typed-label mt-2 !text-[9px]">
+          LOGGED — ITEM {index + 1}/4
+        </div>
       </div>
     </motion.div>
   );

@@ -109,7 +109,7 @@ export default function Projects() {
       <div className="container-mx container-px">
         <div className="mb-16 flex flex-col items-start justify-center gap-6 md:mb-24">
           <SectionLabel index="003" label="Exhibits" />
-          <h2 className="mt-2 h-display max-w-3xl font-display text-6xl tracking-tight md:text-7xl lg:text-8xl">
+          <h2 className="mt-3 h-display max-w-4xl font-display text-6xl tracking-tight md:text-7xl lg:text-8xl">
             <ScrollFloat
               as="span"
               containerClassName="block"
@@ -149,7 +149,7 @@ export default function Projects() {
               className={cn(
                 "torn-shadow relative flex transition-all duration-300 hover:rotate-0",
                 dress[i].rotate,
-                dress[i].fastener === "tape" && "tape-corners"
+                dress[i].fastener === "tape" && "tape-corners",
               )}
             >
               {dress[i].fastener === "pin" && (
@@ -167,7 +167,7 @@ export default function Projects() {
                   "relative flex flex-1 flex-col p-6",
                   dress[i].surface,
                   dress[i].torn,
-                  dress[i].dogEar && "dog-ear"
+                  dress[i].dogEar && "dog-ear",
                 )}
               >
                 {dress[i].stain && (
@@ -177,69 +177,69 @@ export default function Projects() {
                     aria-hidden
                   />
                 )}
-              <div className="flex items-start justify-between gap-3">
-                <span className="stamp text-sm">Exhibit {p.exhibit}</span>
-                <span className="typed-label mt-1">FILED {p.year}</span>
-              </div>
+                <div className="flex items-start justify-between gap-3">
+                  <span className="stamp text-sm">Exhibit {p.exhibit}</span>
+                  <span className="typed-label mt-1">FILED {p.year}</span>
+                </div>
 
-              <Polaroid
-                src={p.image}
-                alt={`Screenshot of ${p.title}`}
-                caption={p.caption}
-                rotate={i % 2 === 0 ? 1.5 : -1.5}
-                className="mx-auto mt-6 w-full max-w-[300px]"
-                imgClassName="aspect-[4/3] object-cover object-top"
-              />
+                <Polaroid
+                  src={p.image}
+                  alt={`Screenshot of ${p.title}`}
+                  caption={p.caption}
+                  rotate={i % 2 === 0 ? 1.5 : -1.5}
+                  className="mx-auto mt-6 w-full max-w-[300px]"
+                  imgClassName="aspect-[4/3] object-cover object-top"
+                />
 
-              <h3 className="mt-6 font-display text-lg leading-snug tracking-tight text-ink">
-                {p.title}
-              </h3>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-dim">
-                {p.description}
-              </p>
+                <h3 className="mt-6 font-display text-lg leading-snug tracking-tight text-ink">
+                  {p.title}
+                </h3>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-dim">
+                  {p.description}
+                </p>
 
-              <RiskLevel
-                label="CLASSIFICATION LEVEL"
-                level={p.risk}
-                className="mt-5"
-              />
+                <RiskLevel
+                  label="CLASSIFICATION LEVEL"
+                  level={p.risk}
+                  className="mt-5"
+                />
 
-              <ul className="mt-5 flex flex-wrap gap-2">
-                {p.tags.map((t) => (
-                  <li
-                    key={t}
-                    className="border border-line bg-paper-aged px-2 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-ink-dim"
-                  >
-                    {t}
-                  </li>
-                ))}
-              </ul>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {p.tags.map((t) => (
+                    <li
+                      key={t}
+                      className="border border-line bg-paper-aged px-2 py-1 font-mono text-[10px] uppercase tracking-[0.08em] text-ink-dim"
+                    >
+                      {t}
+                    </li>
+                  ))}
+                </ul>
 
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-dashed border-line-strong pt-4">
-                <div className="flex items-center gap-3">
-                  {p.href !== "#" && (
+                <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-dashed border-line-strong pt-4">
+                  <div className="flex items-center gap-3">
+                    {p.href !== "#" && (
+                      <a
+                        href={p.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-stamp transition-colors hover:text-stamp-dark"
+                      >
+                        [ View Exhibit <ArrowUpRight size={12} /> ]
+                      </a>
+                    )}
                     <a
-                      href={p.href}
+                      href={p.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-stamp transition-colors hover:text-stamp-dark"
+                      className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-dim transition-colors hover:text-ink"
                     >
-                      [ View Exhibit <ArrowUpRight size={12} /> ]
+                      [ Source <Github size={12} /> ]
                     </a>
-                  )}
-                  <a
-                    href={p.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-dim transition-colors hover:text-ink"
-                  >
-                    [ Source <Github size={12} /> ]
-                  </a>
+                  </div>
+                  <span className="stamp-box !rotate-2 text-[9px]">
+                    {p.href !== "#" ? "Approved for release" : "Sealed"}
+                  </span>
                 </div>
-                <span className="stamp-box !rotate-2 text-[9px]">
-                  {p.href !== "#" ? "Approved for release" : "Sealed"}
-                </span>
-              </div>
               </div>
             </motion.article>
           ))}
