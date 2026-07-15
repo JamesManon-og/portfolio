@@ -636,10 +636,27 @@ body {
     color 0.35s ease;
   cursor: help;
 }
-.redacted-hover:hover {
+.redacted-hover:hover,
+.redacted-hover:active,
+.redacted-hover:focus-visible {
   background: transparent;
   color: inherit;
   user-select: auto;
+}
+
+/* --- Lite-tier downgrades ---------------------------------------------------
+   `tier-lite` is stamped on <html> by SiteAtmosphere for phones / low-end /
+   reduced-motion devices. Cards keep their .paper box-shadows, so dropping
+   the clip-path-traced drop-shadows and the navbar backdrop blur changes
+   almost nothing visually while removing the two worst per-frame raster
+   costs on weak GPUs. */
+html.tier-lite .torn-shadow {
+  filter: none;
+}
+html.tier-lite .glass {
+  background: rgba(242, 232, 207, 0.97);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* Round evidence-board pushpin */

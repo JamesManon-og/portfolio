@@ -109,7 +109,7 @@ export default function Projects() {
       <div className="container-mx container-px">
         <div className="mb-16 flex flex-col items-start justify-center gap-6 md:mb-24">
           <SectionLabel index="003" label="Exhibits" />
-          <h2 className="mt-3 h-display max-w-4xl font-display text-6xl tracking-tight md:text-7xl lg:text-8xl">
+          <h2 className="mt-3 h-display max-w-4xl font-display text-[2.5rem] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
             <ScrollFloat
               as="span"
               containerClassName="block"
@@ -147,7 +147,7 @@ export default function Projects() {
                 ease: [0.22, 1, 0.36, 1],
               }}
               className={cn(
-                "torn-shadow relative flex transition-all duration-300 hover:rotate-0",
+                "torn-shadow relative flex transition-transform duration-300 hover:rotate-0",
                 dress[i].rotate,
                 dress[i].fastener === "tape" && "tape-corners",
               )}

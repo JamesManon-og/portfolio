@@ -102,7 +102,7 @@ export default function Experience() {
           {/* Left — heading + description */}
           <div className="flex flex-col justify-center">
             <SectionLabel index="002" label="Service Record" />
-            <h2 className="mt-6 h-display max-w-3xl font-display text-6xl tracking-tight md:text-7xl lg:text-8xl">
+            <h2 className="mt-6 h-display max-w-3xl font-display text-[2.5rem] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl">
               <ScrollFloat
                 as="span"
                 containerClassName="block"
@@ -138,7 +138,7 @@ export default function Experience() {
           <div className="relative flex flex-col gap-10 py-6">
             <span
               aria-hidden
-              className="stamp-diagonal left-1/2 top-1/3 -translate-x-1/2 text-6xl md:text-7xl"
+              className="stamp-diagonal left-1/2 top-1/3 -translate-x-1/2 text-5xl sm:text-6xl md:text-7xl"
             >
               Service Record
             </span>
@@ -154,7 +154,7 @@ export default function Experience() {
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 className={cn(
-                  "torn-shadow relative transition-all duration-300 hover:rotate-0",
+                  "torn-shadow relative transition-transform duration-300 hover:rotate-0",
                   dress[i].rotate,
                   dress[i].fastener === "tape" && "tape-x"
                 )}

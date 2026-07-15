@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useDeviceCapability } from "@/lib/useDeviceCapability";
 
 /**
@@ -7,15 +8,26 @@ import { useDeviceCapability } from "@/lib/useDeviceCapability";
  * capability:
  *
  * - Always: the kraft evidence-board gradient + warm vignette (static, cheap).
- * - `full` tier only: the paper-fiber grain overlay (a viewport-wide
- *   mix-blend-mode layer — the one non-free effect left).
+ * - `full` tier only: the viewport-wide mix-blend-mode layers — paper-fiber
+ *   grain and board damage — which force full-screen recompositing on scroll.
+ *
+ * Also stamps a `tier-lite` class on <html> so pure-CSS costs elsewhere
+ * (torn-edge drop-shadows, navbar backdrop blur) can be switched off in
+ * globals.css without threading the hook through every component.
  *
  * Lives in a client component so the root layout can stay a server component.
  */
 export default function SiteAtmosphere() {
   const { tier, mounted } = useDeviceCapability();
 
-  const showGrain = mounted && tier === "full";
+  const showBlendLayers = mounted && tier === "full";
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      "tier-lite",
+      mounted && tier === "lite",
+    );
+  }, [mounted, tier]);
 
   return (
     <>
@@ -25,14 +37,15 @@ export default function SiteAtmosphere() {
         className="kraft-bg pointer-events-none fixed inset-0 z-0"
       />
 
-      {/* Stains, scratches, scuffed corners — static gradients, always on */}
-      <div className="board-damage" aria-hidden />
+      {/* Stains, scratches, scuffed corners — full tier only (mix-blend-mode
+          layer recomposites the whole viewport on scroll) */}
+      {showBlendLayers && <div className="board-damage" aria-hidden />}
 
       {/* Warm vignette — static gradient, cheap, keep it everywhere */}
       <div className="vignette" aria-hidden />
 
       {/* Paper-fiber grain — full tier only (viewport-wide blend mode) */}
-      {showGrain && <div className="grain" aria-hidden />}
+      {showBlendLayers && <div className="grain" aria-hidden />}
     </>
   );
 }

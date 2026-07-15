@@ -53,7 +53,7 @@ export default function Contact() {
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
           <div className="lg:col-span-6">
             <SectionLabel index="005" label="Witness Statement" />
-            <h2 className="mt-6 h-display font-display text-5xl tracking-tight md:text-7xl">
+            <h2 className="mt-6 h-display font-display text-[2.5rem] tracking-tight sm:text-5xl md:text-7xl">
               <ScrollFloat
                 as="span"
                 containerClassName="block"

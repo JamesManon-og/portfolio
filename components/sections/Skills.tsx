@@ -19,6 +19,7 @@ import {
 import ScrollVelocity from "@/components/ui/ScrollVelocity";
 import SectionLabel from "@/components/ui/SectionLabel";
 import ScrollFloat from "@/components/ui/ScrollFloat";
+import { useDeviceCapability } from "@/lib/useDeviceCapability";
 
 const categories = [
   {
@@ -130,7 +131,7 @@ export default function Skills() {
               <SectionLabel index="004" label="Evidence Inventory" />
               <span className="stamp-box text-[9px]">Authorized equipment</span>
             </div>
-            <h2 className="mt-6 h-display max-w-4xl font-display text-5xl tracking-tight md:text-7xl">
+            <h2 className="mt-6 h-display max-w-4xl font-display text-[2.5rem] tracking-tight sm:text-5xl md:text-7xl">
               <ScrollFloat
                 as="span"
                 containerClassName="block"
@@ -164,7 +165,7 @@ export default function Skills() {
         <div className="relative">
           <span
             aria-hidden
-            className="stamp-diagonal left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-8xl"
+            className="stamp-diagonal left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl sm:text-7xl md:text-8xl"
           >
             Classified
           </span>
@@ -234,10 +235,13 @@ function SkillCard({
   index: number;
 }) {
   const Icon = category.icon;
+  const { tier } = useDeviceCapability();
+  // Skip the blur keyframes on lite — animating filter is too heavy there.
+  const withBlur = tier === "full";
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 30, ...(withBlur && { filter: "blur(10px)" }) }}
+      whileInView={{ opacity: 1, y: 0, ...(withBlur && { filter: "blur(0px)" }) }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{
         duration: 0.8,

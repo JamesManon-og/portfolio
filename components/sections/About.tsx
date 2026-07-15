@@ -14,13 +14,13 @@ import { useDeviceCapability } from "@/lib/useDeviceCapability";
 
 export default function About() {
   const ref = useRef<HTMLElement>(null);
-  const { reducedMotion, coarsePointer } = useDeviceCapability();
+  const { reducedMotion, tier } = useDeviceCapability();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  // Tone the parallax down on touch and off entirely for reduced-motion.
-  const parallaxRange = reducedMotion ? 0 : coarsePointer ? 40 : 120;
+  // Parallax only on capable desktops; off for lite tier and reduced-motion.
+  const parallaxRange = reducedMotion || tier === "lite" ? 0 : 120;
   const y = useTransform(scrollYProgress, [0, 1], [0, parallaxRange]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
@@ -114,6 +114,7 @@ export default function About() {
                       <dd
                         className="redacted redacted-hover"
                         title="declassify"
+                        tabIndex={0}
                       >
                         coffee shops
                       </dd>
@@ -165,7 +166,6 @@ export default function About() {
                 alt="Portrait of James Manon-og"
                 caption="the developer, 2026"
                 rotate={3}
-                priority
                 className="w-[min(100%,320px)]"
               />
               <BinderClip
